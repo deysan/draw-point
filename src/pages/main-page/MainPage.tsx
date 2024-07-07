@@ -1,25 +1,45 @@
-import IconButton from '@mui/material/IconButton';
+import React, { type ElementRef } from 'react';
+
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { Button, TextField } from '@mui/material';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import DeleteIcon from '@mui/icons-material/Delete';
 import PhotoIcon from '@mui/icons-material/Photo';
-import AddIcon from '@mui/icons-material/Add';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+
+import { CanvasBlock } from '../../components/CanvasBlock';
+import { ImageModal } from '../../components/ImageModal';
+import { SideBar } from '../../components/SideBar';
 import { useTheme } from '../../hooks/useTheme';
+import { useImageStore } from '../../stores';
 
 const drawerWidth = 320;
 
 export default function MainPage() {
+  const toolbarRef = React.useRef<ElementRef<'div'>>(null);
+
   const { themeMode, toggleTheme } = useTheme();
+
+  const image = useImageStore((state) => state.image);
+
+  const [imageModalOpen, setImageModalOpen] = React.useState(false);
+
+  const [dimensions, setDimensions] = React.useState({
+    width: 0,
+    height: 0,
+  });
+
+  React.useEffect(() => {
+    if (toolbarRef.current) {
+      setDimensions({
+        width: window.innerWidth - drawerWidth,
+        height: window.innerHeight - toolbarRef.current.offsetHeight,
+      });
+    }
+  }, []);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -40,187 +60,43 @@ export default function MainPage() {
         </Toolbar>
       </AppBar>
 
-      <Drawer
-        variant="permanent"
+      <SideBar width={drawerWidth} />
+
+      <Box
+        component="main"
         sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
+          flexGrow: 1,
+          backgroundImage: image ? `url(${image})` : undefined,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       >
-        <Toolbar />
+        <Toolbar ref={toolbarRef} />
 
-        <Box sx={{ overflow: 'auto' }}>
-          <Typography
-            variant="h6"
-            noWrap
-            component="h2"
-            sx={{
-              position: 'sticky',
-              top: 0,
-              p: 2,
-              bgcolor: 'background.paper',
-              borderBottom: 1,
-              borderColor: 'divider',
-              zIndex: 9,
-            }}
-          >
-            List of points:
-          </Typography>
-
-          <List>
-            {[
-              '1',
-              '2',
-              '3',
-              '4',
-              '5',
-              '6',
-              '7',
-              '8',
-              '9',
-              '10',
-              '11',
-              '12',
-              '13',
-              '14',
-              '15',
-              '16',
-              '17',
-              '18',
-              '19',
-              '201',
-              '211',
-              '221',
-            ].map((text, index) => (
-              <ListItem
-                key={index as React.Key}
-                sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-              >
-                <ListItemText
-                  primary={text}
-                  sx={{
-                    mr: 1,
-                    minWidth: '28px',
-                    flexShrink: 0,
-                    textAlign: 'center',
-                  }}
-                />
-                <TextField
-                  id="x"
-                  label="x"
-                  type="number"
-                  size="small"
-                  defaultValue={0}
-                />
-                <TextField
-                  id="y"
-                  label="y"
-                  type="number"
-                  size="small"
-                  defaultValue={0}
-                />
-                <IconButton>
-                  <DeleteIcon />
-                </IconButton>
-              </ListItem>
-            ))}
-          </List>
-
-          <Box
-            sx={{
-              position: 'sticky',
-              bottom: 0,
-              p: 2,
-              bgcolor: 'background.paper',
-              borderTop: 1,
-              borderColor: 'divider',
-              zIndex: 9,
-            }}
-          >
-            <Button variant="contained" fullWidth>
-              <AddIcon />
-              Add point
-            </Button>
-          </Box>
-        </Box>
-      </Drawer>
-
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <CanvasBlock width={dimensions.width} height={dimensions.height} />
 
         <IconButton
           size="large"
-          sx={{ position: 'fixed', bottom: 16, right: 16 }}
+          onClick={() => setImageModalOpen(true)}
+          sx={{
+            position: 'fixed',
+            bottom: 16,
+            right: 16,
+            color: 'primary.main',
+            backgroundColor: 'primary.contrastText',
+          }}
         >
           <PhotoIcon fontSize="large" />
         </IconButton>
       </Box>
+
+      {imageModalOpen && (
+        <ImageModal
+          isOpen={imageModalOpen}
+          onClose={() => setImageModalOpen(false)}
+        />
+      )}
     </Box>
   );
 }

@@ -1,7 +1,6 @@
+import type { PaletteMode } from '@mui/material';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-import type { PaletteMode } from '@mui/material';
 
 type ThemeStore = {
   mode: PaletteMode;

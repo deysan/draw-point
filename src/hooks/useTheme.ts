@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { createTheme } from '@mui/material';
-import { useThemeStore } from '../stores/useThemeStore';
+
+import { useThemeStore } from '../stores';
 
 export function useTheme() {
   const mode = useThemeStore((state) => state.mode);
