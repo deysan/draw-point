@@ -1,4 +1,4 @@
-import { Circle, Layer, Stage } from 'react-konva';
+import { Circle, Layer, Line, Stage } from 'react-konva';
 
 import { useTheme } from '@mui/material';
 
@@ -14,12 +14,30 @@ export function CanvasBlock({
   const points = usePointsStore((state) => state.points);
 
   const theme = useTheme();
+
   const primaryMainColor = theme.palette.primary.main;
   const primaryContrastTextColor = theme.palette.primary.contrastText;
+  const dividerColor = theme.palette.divider;
+
+  const centerX = width / 2;
+  const centerY = height / 2;
 
   return (
     <Stage width={width} height={height}>
-      <Layer x={width / 2} y={height / 2}>
+      <Layer>
+        <Line
+          points={[0, centerY, width, centerY]}
+          stroke={dividerColor}
+          strokeWidth={1}
+        />
+        <Line
+          points={[centerX, 0, centerX, height]}
+          stroke={dividerColor}
+          strokeWidth={1}
+        />
+      </Layer>
+
+      <Layer x={centerX} y={centerY}>
         {points.map((point) => (
           <Circle
             key={point.id}
