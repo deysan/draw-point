@@ -1,3 +1,3 @@
-export * from './useImageStore';
-export * from './usePointsStore';
-export * from './useThemeStore';
+export { useImageStore } from './useImageStore';
+export { usePointsStore } from './usePointsStore';
+export { useThemeStore } from './useThemeStore';

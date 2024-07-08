@@ -10,11 +10,11 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { CanvasBlock } from '../../components/CanvasBlock';
-import { ImageModal } from '../../components/ImageModal';
-import { SideBar } from '../../components/SideBar';
-import { useTheme } from '../../hooks/useTheme';
-import { useImageStore } from '../../stores';
+import { CanvasBlock } from '../components';
+import { ImageModal } from '../components';
+import { SideBar } from '../components';
+import { useTheme } from '../hooks';
+import { useImageStore } from '../stores';
 
 const drawerWidth = 320;
 
